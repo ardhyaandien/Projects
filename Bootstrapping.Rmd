@@ -1,0 +1,233 @@
+---
+title: "Bootstrapping"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Problem A
+
+Generating independent random variables. Using **rnorm** to generate a thousand 
+normal random variables and **runif** to generate a thousand uniform random variables. 
+
+```{r}
+ set.seed(35)
+ X <- rnorm(1000, 4, sqrt(10))
+ Y <- runif(1000, 2, 8)
+```
+
+
+Computing the probability using a for loop. 
+
+```{r}
+A <- data.frame(X, Y)
+# Create a vector of 0s with length 1000 
+A$prob <- rep(0, nrow(A))
+# For loop will measure if X is bigger than Y, if the conition is TRUE,
+# the probability vector will chnage to 1
+for(i in 1:nrow(A)){
+  if(A$X[i] > A$Y[i]){
+    A$prob[i] <- 1
+  }
+  
+  # Sums all the 1s and divide it with 1000 to get the probability 
+  probability <- sum(A$prob)/nrow(A)
+}
+probability
+ 
+```
+
+Using bootstrapping to calculate multiple probabilities 
+
+```{r}
+nboot <- 1000
+boot <- rep(0, nboot)
+for(k in 1:nboot){
+# Generates 1000 rnorm and runif varibles
+  x <- rnorm(nboot, 4, sqrt(10)) 
+  y <- runif(nboot, 2, 8)
+  
+  prob <- rep(0, length(x))
+  
+  for(i in 1:length(x)){
+    if(x[i] > y[i]){
+      prob[i] <- 1
+    }
+    
+    # Finds the probability of 1 value of boot
+    # Continues the loop until 1000 probabilities have been created 
+    boot[k] <- sum(prob)/length(x)
+  }
+}
+summary(boot)
+```
+
+Next, bootstrapping as a function is created to easily create multiple probabilities. All the function needs is the input of the number of probabilities desired.  
+
+```{r}
+bootstrap <- function(nboot = 1000){
+  boot <- rep(0, nboot)
+  
+  for(k in 1:nboot){
+# Generates 1000 rnorm and runif varibles
+    x <- rnorm(nboot, 4, sqrt(10))
+    y <- runif(nboot, 2, 8)
+    
+    prob <- rep(0, length(x))
+    
+    for(i in 1:length(x)){
+      if(x[i] > y[i]){
+        prob[i] <- 1
+      }
+      # Finds the probability of 1 value of boot
+      # Continues the loop until 1000 probabilities have been created 
+      boot[k] <- sum(prob)/length(x)
+    }
+  }
+  return(boot)
+}
+```
+
+```{r}
+# Test values 
+set.seed(8)
+bootstrap(1000)
+```
+
+```{r summary}
+summary(bootstrap(1000))
+```
+
+```{r hist_bootstrap, fig.height=3, fig.width=3}
+hist(bootstrap(1000))
+```
+
+Based on the histogram, the simulation becomes normally distributed. 
+
+Below is the sample variance and number of Monte Carlo simulations. 
+
+```{r}
+length <- 100
+number <- NULL
+sample_var <- NULL
+for(b in 2:length){
+  number[b] <- sum(bootstrap(b))
+  sample_var[b] <- var(bootstrap(b))
+}
+```
+
+```{r plot_variance}
+plot(number, sample_var, ylab = "Sample Variance", xlab = "Number of Monte Carlo Simulations")
+```
+
+Based on the graph, as the number of Monte Carlo simulations increaases, the variance become closer together. Indicating a lesser range of values and a more accurate simulation. 
+
+## Problem B 
+
+The code below simulates a match where 0s indicate lose and 1s indicate wins. The code will end if the amount of loses is more than 3 or the amount of wins are more that 7. 
+
+```{r}
+set.seed(12)
+# Generating one probablity of a game winning and losing 
+win <- runif(1, 0, 1)
+lose <- 1-win
+# Creates a vector of 1 and 0
+WL <- c(1, 0)
+result <- NULL
+sum1 <- NULL
+sum0 <- NULL
+sample <- NULL
+# The maximum amount of plays is 9, as there can be 2 loses before 7 wins. 
+# Therefore the range is from 1:9
+for(k in 1:9){
+  # Generates a 1 or 0 based on the probability generated previously
+  result[k] <- sample(x = WL, prob = c(win, lose), size = 1)
+  
+  # Sum the 1s and 0s already available in the sample
+  sum1 <- sum(sample == 1)
+  sum0 <- sum(sample == 0)
+  
+  
+  # If the sum does not meet the condition, the result of the loop is added into a vector titled "sample"
+  # If the sum does meet the condition, the loop will break and will not add the result of the loop to the sample vector
+  
+  if(sum0 > 2 | sum1 > 6){
+    break
+  } else{
+    sample <- c(sample, result[k])
+  }
+  
+}
+print(sample)
+```
+
+This loop generates multiple wins, samples and length of the sample, and stores them into a data frame. 
+
+```{r}
+ # loop with probability and total number of matches played 
+n <- 50
+win <- NULL
+lose <- NULL
+total.length <- NULL
+probability.win <- NULL
+total <- NULL
+for(i in 1:n){
+  
+  # creates an empty data frame
+  
+  
+  # measure probability 
+  win[i] <- runif(1, 0, 1)
+  lose[i] <- 1-win[i]
+  WL <- c(1, 0)
+  
+  result <- NULL
+  sum1 <- NULL
+  sum0 <- NULL
+  sample <- NULL
+  
+  # generates 1s or 0s based on the probability 
+  for(k in 1:9){
+    result[k] <- sample(x = WL, prob = c(win[i], lose[i]), size = 1)
+    
+    # sums all the 1s and all the 0s in the sample
+    sum1 <- sum(sample == 1)
+    sum0 <- sum(sample == 0)
+    
+    # this code will break the for loop if the number of lose(0) is bigger than 3
+    # or the number of wins(1s) is bigger than 7
+    if(sum0 > 2 | sum1 > 6){
+      break
+    } else{
+      sample <- c(sample, result[k])
+    }
+    
+  }
+  
+  # for every loop, length of the sample is measured 
+  length <- length(sample)
+  
+  total.length <- c(total.length , length)
+  probability.win <- c(probability.win, win[i])
+  
+  # for every loop, the values of length and win is added into the data frame
+  total <- data.frame(total.length, probability.win)
+}
+```
+
+This shows the probability of winning, alongside the length of each match. 
+```{r}
+print(total)
+```
+
+For plotting, a box plot is chosen to show the range of each sample length as plotted against the probability of their win. It can seen by the plot that as the porbability of win gets higher, the number of matches increases, indicating that their are more wins in the tournament. In addition, the range of probability is smaller for length of 8 and 9 as compared to the other lengths. Indicating less variety in probability for those lengths. 
+
+```{r}
+boxplot(probability.win ~ total.length, data = total, xlab = "Length of Sample", 
+        ylab = "Probability of Win", main = "Total Number of Matches Varies as a Function of P",
+        col = c("sienna1", "hotpink", "paleturquoise1"))
+```
+
+The observed win rate differs from the assumed win rate as a draw is not an option in the format of this tournament. In addition, the length of the sample is not able to exceed 9 because the maximum amount of plays is 9 before one of the conditions is met. Furthermore, the minimum amount of plays is 3 as the loop will break if the condition of lose is met. 
