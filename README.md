@@ -1,3 +1,5 @@
+![Image-Description](https://i.pinimg.com/originals/85/dd/5a/85dd5a63f1c2e9581c76a8fec04ef3d4.png)
+
 # Projects
 Codes from projects that I have done:
 - Bike Seoul & Washington: Focused on data wrangling and data visualisation
