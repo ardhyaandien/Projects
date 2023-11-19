@@ -8,4 +8,5 @@ Codes from projects that I have done:
 - Maximisation: A code used to test a function 
 - my_rnorm: Create mathematical functions rnorm, rchisq and rt in r.
 - NGN2 and Hes5: Python code as part of my Master's dissertation on proteins HES5 and NGN2. The code includes: data cleaning and visualisation, correlation, decomposition, cross-correlation and lag cross correlation.
+- NGN2 and Hes5 (R): R code as part of the HES5 and NGN2 project. The code includes missing data imputation, K-nearest neighbours algorithm, dynamic time warping and within-cluster sum of squares. 
   
