@@ -11,3 +11,5 @@ Codes from projects that I have done:
 - NGN2 and Hes5 (R): R code as part of the HES5 and NGN2 project. The code includes missing data imputation, K-nearest neighbours algorithm, dynamic time warping and within-cluster sum of squares.
 - EMNIST: A code to compare the imporatance of PCA in K-mean clustering using EMNIST data. To observe whether PCA is helpful in identifying illegible handwriting. 
   
+### Tableau Projects 
+https://public.tableau.com/app/profile/ardhya.naresewari 
