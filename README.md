@@ -2,6 +2,7 @@
 
 # Projects
 Codes from projects that I have done:
+- Stellar Classification: Using unsupervised ML for clustering and supervised ML for classification
 - Bike Seoul & Washington: Focused on data wrangling and data visualisation
 - Boostrapping: Code for bootsrapping and Monte Carlo simulation (needs parallel computation to be implemented to make the code run faster)
 - ID5059_models: Code includes data cleaning and data evaluation through python in jupyter notebooks 
