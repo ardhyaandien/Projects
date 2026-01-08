@@ -2,6 +2,7 @@
 
 # Projects
 Codes from projects that I have done:
+- Risk Managmenet: A project to limit risk for finance companies. Using supervised ML to determine whether a company is likely to repay their loan based on their financial statement. 
 - Stellar Classification: Using unsupervised ML for clustering and supervised ML for classification
 - Bike Seoul & Washington: Focused on data wrangling and data visualisation
 - Boostrapping: Code for bootsrapping and Monte Carlo simulation (needs parallel computation to be implemented to make the code run faster)
