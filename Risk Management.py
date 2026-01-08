@@ -1,3 +1,10 @@
+"""
+RISK MANAGEMENT
+Measuirng which supervised machine learning will be the best fit to determine whether a company pays back their loan, based on 
+their financial statement. Meant to provide real-time insights that allows for quick robust decision making. 
+Data: Company Financial Statement IDX 2020 - 2023
+"""
+
 import pandas as pd 
 import numpy as np
 import seaborn as sns
